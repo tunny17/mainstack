@@ -4,26 +4,32 @@ import { DateRangePickerProps } from '../../types';
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({ setFilter, filters }) => {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [startDate, setStartDate] = useState('17 Jul 2023');
-  const [endDate, setEndDate] = useState('17 Aug 2023');
-  const [currentMonth, setCurrentMonth] = useState('July, 2023');
-  const [selectedDate, setSelectedDate] = useState(17);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [activeDate, setActiveDate] = useState<'start' | 'end' | null>(null);
+
+  // Helper to format date
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
 
   // Go to previous month
   const prevMonth = () => {
-    setCurrentMonth('June, 2023');
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   };
 
   // Go to next month
   const nextMonth = () => {
-    setCurrentMonth('August, 2023');
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
   // Select a date
   const selectDate = (day: number) => {
+    const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     setSelectedDate(day);
-    const formattedDate = `${day} Jul 2023`;
+    const formattedDate = formatDate(selected);
 
     if (activeDate === 'start') {
       setStartDate(formattedDate);
@@ -39,8 +45,19 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ setFilter, filters })
   // Generate calendar days
   const generateCalendarDays = () => {
     const days = [];
-    const daysInMonth = 31;
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+    const daysInMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0
+    ).getDate();
 
+    // Add empty slots for days before the first day of the month
+    for (let i = 0; i < (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1); i++) {
+      days.push(<div key={`empty-${i}`} className="h-12 w-12"></div>);
+    }
+
+    // Add actual days of the month
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(
         <div
@@ -73,7 +90,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ setFilter, filters })
             setActiveDate('start');
           }}
         >
-          <span className="text-sm">{startDate}</span>
+          <span className="text-sm">{startDate || 'Select Start Date'}</span>
           <ChevronUp size={24} />
         </button>
 
@@ -87,7 +104,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ setFilter, filters })
             activeDate === 'end' ? 'border-2 border-black' : 'bg-gray-100'
           } rounded-md flex justify-between items-center`}
         >
-          <span className="text-sm">{endDate}</span>
+          <span className="text-sm">{endDate || 'Select End Date'}</span>
           <ChevronDown size={24} />
         </button>
       </div>
@@ -100,7 +117,9 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ setFilter, filters })
             <button onClick={prevMonth} className="p-2">
               <ChevronLeft size={24} />
             </button>
-            <h3 className="text-sm font-medium">{currentMonth}</h3>
+            <h3 className="text-sm font-medium">
+              {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </h3>
             <button onClick={nextMonth} className="p-2">
               <ChevronRight size={24} />
             </button>

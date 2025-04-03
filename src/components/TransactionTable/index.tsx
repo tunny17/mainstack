@@ -17,6 +17,8 @@ const TransactionTable = ({ data }: { data: Transaction[] }) => {
   const applyFilters = () => {
     let filtered = [...data];
 
+    console.log('filters', filters);
+
     // -- filter by transaction type (deposit/withdrawal)
     if (filters.type !== 'all') {
       filtered = filtered.filter((t) => t?.type === filters.type);

@@ -58,7 +58,7 @@ const Filter = ({
 
   return (
     <section className="fixed w-full h-[100vh] inset-0 bg-black/20 z-50 flex justify-end">
-      <div className="w-full md:w-[60%] lg:w-[30%] h-fit flex flex-col gap-5 p-6 mt-5 mr-5 rounded-xl shadow-lg z-10 bg-white">
+      <div className="w-full md:w-[32rem] h-fit flex flex-col gap-9 p-6 mt-5 mr-5 rounded-xl shadow-lg z-10 bg-white">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-bold">Filter</h1>
 
