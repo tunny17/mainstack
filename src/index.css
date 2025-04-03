@@ -2,11 +2,25 @@
 
 @font-face {
   font-family: 'Degular';
-  src: local('Degular'), url('./fonts/fonnts.com-DegularDemo-Light.otf') format('otf');
-  font-weight: 300;
-  font-style: normal;
+  src: local('Degular'), url('/fonts/DegularDisplay-Medium.otf') format('otf');
+  font-weight: normal;
 }
 
+p,
+h1,
+span,
+a,
+li,
+button,
+input,
+textarea {
+  font-family: 'Degular', sans-serif;
+}
+
+.test {
+  font-family: 'Degular', sans-serif;
+  font-weight: normal;
+}
 /* @font-face {
   font-family: 'Degular';
   src: local('Degular'), url('./fonts/fonnts.com-DegularDemo-regular.otf') format('otf');

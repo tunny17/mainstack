@@ -75,17 +75,17 @@ const Home = () => {
     <section className="px-28 py-10 w-full">
       {isLoading ? (
         <div className="flex items-center justify-center">
-          <img src="/public/animated-logo.svg" alt="animated logo" className="w-[20rem]" />
+          <img src="/animated-logo.svg" alt="animated logo" className="w-[20rem]" />
         </div>
       ) : (
         <>
           {/* --- first section */}
           <section className="flex justify-between items-start w-full">
             <div className="w-[60%]">
-              <div className="w-[53%] flex items-center justify-between mb-12 pl-5">
+              <div className="w-[53%] flex items-center justify-between mb-12 pl-5 degular-regular">
                 <div className="flex flex-col gap-3">
-                  <p className="text-xs text-gray-400">Available Balance</p>
-                  <h1 className="text-2xl font-bold">
+                  <p className="text-xs text-gray-400 degular-regular test">Available Balance</p>
+                  <h1 className="text-2xl font-bold degular-regular degular-regular">
                     USD{' '}
                     {data.balance.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
