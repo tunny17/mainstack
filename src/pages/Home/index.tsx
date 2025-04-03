@@ -41,17 +41,17 @@ const Home = () => {
   ];
 
   const fetchHomeData = async () => {
-    // Fetch data from the server
     const baseUrl = import.meta.env.VITE_PUBLIC_BASEURL;
 
     try {
-      const userResponse = await axios.get(`${baseUrl}/user`);
-      const walletResponse = await axios.get(`${baseUrl}/wallet`);
-      const transactionResponse = await axios.get(`${baseUrl}/transactions`);
+      const [userResponse, walletResponse, transactionResponse] = await Promise.all([
+        axios.get(`${baseUrl}/user`),
+        axios.get(`${baseUrl}/wallet`),
+        axios.get(`${baseUrl}/transactions`)
+      ]);
 
       if (userResponse.status === 200) {
         setData(userResponse.data);
-        setIsLoading(false);
       }
       if (walletResponse.status === 200) {
         setData((prev) => ({ ...prev, ...walletResponse.data }));
@@ -59,6 +59,8 @@ const Home = () => {
       if (transactionResponse.status === 200) {
         setTransactions(transactionResponse.data);
       }
+
+      setIsLoading(false);
     } catch (error) {
       alert(error);
       console.log('error', error);
