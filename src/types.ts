@@ -60,8 +60,8 @@ export interface TransactionItem {
 export interface FilterItem {
   type: string;
   status: string;
-  dateStart?: string;
-  dateEnd?: string;
+  dateStart: string | Date;
+  dateEnd: string | Date;
 }
 
 export interface FilterProps {
@@ -70,8 +70,8 @@ export interface FilterProps {
     type: string;
     status: string;
 
-    dateStart?: string;
-    dateEnd?: string;
+    dateStart: string | Date;
+    dateEnd: string | Date;
   }) => void;
   setFilterOpen: (open: boolean) => void;
   resetFilters: () => void;

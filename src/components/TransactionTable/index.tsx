@@ -17,16 +17,25 @@ const TransactionTable = ({ data }: { data: Transaction[] }) => {
   const applyFilters = () => {
     let filtered = [...data];
 
-    console.log('filters', filters);
-
     // -- filter by transaction type (deposit/withdrawal)
     if (filters.type !== 'all') {
-      filtered = filtered.filter((t) => t?.type === filters.type);
+      filtered = filtered.filter((t) => t?.metadata?.type === filters?.type);
     }
 
     // -- filter by status
     if (filters.status !== 'all') {
       filtered = filtered.filter((t) => t?.status === filters.status);
+    }
+
+    // -- filter by date range
+    if (filters.dateStart !== 'all' && filters.dateEnd !== 'all') {
+      const startDate = new Date(filters.dateStart).getTime();
+      const endDate = new Date(filters.dateEnd).getTime();
+
+      filtered = filtered.filter((t) => {
+        const transactionDate = new Date(t.date).getTime();
+        return transactionDate >= startDate && transactionDate <= endDate;
+      });
     }
 
     setFilteredTransactions(filtered);

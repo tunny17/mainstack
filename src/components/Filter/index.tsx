@@ -32,7 +32,7 @@ const Filter = ({
   ];
 
   const transactionStatusOptions: TransactionOption[] = [
-    { id: 'completed', label: 'Completed' },
+    { id: 'successful', label: 'Successful' },
     { id: 'failed', label: 'Failed' },
     { id: 'pending', label: 'Pending' }
   ];
