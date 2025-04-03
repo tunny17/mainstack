@@ -1,10 +1,10 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 import Chart from '../../components/Home/Chart';
 import TransactionTable from '../../components/TransactionTable';
 
 import { HomePageData, SectionItem, Transaction } from '../../types';
-import { useEffect, useState } from 'react';
 
 const Home = () => {
   const [data, setData] = useState<HomePageData>({

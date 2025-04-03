@@ -1,5 +1,5 @@
 const Crm = () => {
-  return <div>Crm</div>;
+  return <div>Coming soon...</div>;
 };
 
 export default Crm;

@@ -1,5 +1,5 @@
 const Revenue = () => {
-  return <div>Revenue</div>;
+  return <div>Coming soon...</div>;
 };
 
 export default Revenue;
