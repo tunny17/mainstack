@@ -1,41 +1,65 @@
+import { Link, useLocation } from 'react-router';
+
+// --- icons import
+import CrmIcon from '../Icons/CrmIcon';
+import HomeIcon from '../Icons/HomeIcon';
+import AppsIcon from '../Icons/AppsIcon';
+import RevenueIcon from '../Icons/RevenueIcon';
+import AnalyticsIcon from '../Icons/AnalyticsIcon';
+
+// --- types import
+import { HeaderItem } from '../../types';
+
 const Header = () => {
-  const headers = [
+  const location = useLocation();
+
+  const headers: HeaderItem[] = [
     {
       id: 1,
       label: 'Home',
-      icon: 'home'
+      link: '/',
+      icon: <HomeIcon isActive={location.pathname === '/'} />
     },
     {
       id: 2,
       label: 'Analytics',
-      icon: 'analytics'
+      link: '/analytics',
+      icon: <AnalyticsIcon isActive={location.pathname === '/analytics'} />
     },
     {
       id: 3,
       label: 'Revenue',
-      icon: 'revenue'
+      link: '/revenue',
+      icon: <RevenueIcon isActive={location.pathname === '/revenue'} />
     },
     {
       id: 4,
       label: 'CRM',
-      icon: 'crm'
+      link: '/crm',
+      icon: <CrmIcon isActive={location.pathname === '/crm'} />
     },
     {
       id: 5,
       label: 'Apps',
-      icon: 'apps'
+      link: '/apps',
+      icon: <AppsIcon isActive={location.pathname === '/apps'} />
     }
   ];
 
   return (
-    <section className="w-full flex items-center justify-between rounded-full p-3 shadow-md bg-white">
+    <section className="w-full flex items-center justify-between rounded-full p-3 shadow-md bg-white sticky top-4 z-50">
       <img src="/logo.svg" alt="mainstack logo" className="ml-3" />
 
       <div className="flex items-center gap-10">
         {headers.map((header) => (
-          <div key={header.id} className="flex items-center gap-2 text-base">
-            <img src={`/headers/${header.icon}-icon.svg`} alt={`${header.label} icon`} />
-            <p>{header.label}</p>
+          <div
+            key={header.id}
+            className={`flex items-center gap-2 text-sm px-4 py-2 rounded-full ${
+              location.pathname === header.link ? 'text-white bg-black' : 'text-gray-400'
+            }`}
+          >
+            {header.icon}
+            <Link to={header.link}>{header.label}</Link>
           </div>
         ))}
       </div>
