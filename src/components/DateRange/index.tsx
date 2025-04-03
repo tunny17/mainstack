@@ -77,6 +77,94 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ setFilter, filters })
     return days;
   };
 
+  // ...existing code...
+
+  const [calendarView, setCalendarView] = useState<'day' | 'month' | 'year'>('day');
+
+  // Render year list
+  const renderYearList = () => {
+    const years = [];
+    const currentYear = currentDate.getFullYear();
+
+    for (let i = currentYear - 10; i <= currentYear + 10; i++) {
+      years.push(
+        <div
+          key={i}
+          onClick={() => {
+            setCurrentDate(new Date(i, currentDate.getMonth(), 1));
+            setCalendarView('month');
+          }}
+          className="cursor-pointer text-center py-2 hover:bg-gray-100"
+        >
+          {i}
+        </div>
+      );
+    }
+
+    return <div className="grid grid-cols-3 gap-2">{years}</div>;
+  };
+
+  // Render month list
+  const renderMonthList = () => {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+
+    return (
+      <div className="grid grid-cols-3 gap-2">
+        {months.map((month, index) => (
+          <div
+            key={month}
+            onClick={() => {
+              setCurrentDate(new Date(currentDate.getFullYear(), index, 1));
+              setCalendarView('day');
+            }}
+            className="cursor-pointer text-center py-2 hover:bg-gray-100"
+          >
+            {month}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Modify the calendar header
+  const renderCalendarHeader = () => {
+    if (calendarView === 'year') {
+      return renderYearList();
+    }
+
+    if (calendarView === 'month') {
+      return renderMonthList();
+    }
+
+    return (
+      <div className="flex justify-between items-center mb-8">
+        <button onClick={prevMonth} className="p-2">
+          <ChevronLeft size={24} />
+        </button>
+        <h3 className="text-sm font-medium cursor-pointer" onClick={() => setCalendarView('year')}>
+          {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+        </h3>
+        <button onClick={nextMonth} className="p-2">
+          <ChevronRight size={24} />
+        </button>
+      </div>
+    );
+  };
+
+  // Update the return statement
   return (
     <div className="w-full max-w-3xl relative mt-1">
       <div className="flex gap-4">
@@ -112,30 +200,22 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ setFilter, filters })
       {/* Calendar */}
       {showCalendar && (
         <div className="bg-white rounded-3xl shadow-lg p-6 mb-4 absolute left-0 top-14 z-50">
-          {/* Calendar header */}
-          <div className="flex justify-between items-center mb-8">
-            <button onClick={prevMonth} className="p-2">
-              <ChevronLeft size={24} />
-            </button>
-            <h3 className="text-sm font-medium">
-              {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-            </h3>
-            <button onClick={nextMonth} className="p-2">
-              <ChevronRight size={24} />
-            </button>
-          </div>
-
-          {/* Weekday headers */}
-          <div className="grid grid-cols-7 mb-4">
-            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
-              <div key={day} className="text-center text-gray-500">
-                {day}
+          {renderCalendarHeader()}
+          {calendarView === 'day' && (
+            <>
+              {/* Weekday headers */}
+              <div className="grid grid-cols-7 mb-4">
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+                  <div key={day} className="text-center text-gray-500">
+                    {day}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          {/* Calendar grid */}
-          <div className="grid grid-cols-7 gap-y-4">{generateCalendarDays()}</div>
+              {/* Calendar grid */}
+              <div className="grid grid-cols-7 gap-y-4">{generateCalendarDays()}</div>
+            </>
+          )}
         </div>
       )}
     </div>

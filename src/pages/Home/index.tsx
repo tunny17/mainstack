@@ -18,6 +18,7 @@ const Home = () => {
     ledger_balance: 0.0
   });
 
+  const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const sections: SectionItem[] = [
@@ -49,19 +50,17 @@ const Home = () => {
       const transactionResponse = await axios.get(`${baseUrl}/transactions`);
 
       if (userResponse.status === 200) {
-        console.log('setting...');
         setData(userResponse.data);
+        setIsLoading(false);
       }
       if (walletResponse.status === 200) {
-        console.log('setting...');
         setData((prev) => ({ ...prev, ...walletResponse.data }));
       }
       if (transactionResponse.status === 200) {
-        console.log('setting...');
-        console.log('transactionResponse', transactionResponse);
         setTransactions(transactionResponse.data);
       }
     } catch (error) {
+      alert(error);
       console.log('error', error);
     }
   };
@@ -72,55 +71,63 @@ const Home = () => {
 
   return (
     <section className="px-28 py-10 w-full">
-      {/* --- first section */}
-      <section className="flex justify-between items-start w-full">
-        <div className="w-[60%]">
-          <div className="w-[53%] flex items-center justify-between mb-12 pl-5">
-            <div className="flex flex-col gap-3">
-              <p className="text-xs text-gray-400">Available Balance</p>
-              <h1 className="text-2xl font-bold">
-                USD{' '}
-                {data.balance.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })}
-              </h1>
-            </div>
-
-            <button
-              type="button"
-              className="text-sm bg-black text-white rounded-full px-12 py-3 cursor-pointer hover:scale-90 transition-all duration-200"
-            >
-              Withdraw
-            </button>
-          </div>
-
-          {/*  */}
-          <Chart data={transactions} />
+      {isLoading ? (
+        <div className="flex items-center justify-center">
+          <img src="/public/animated-logo.svg" alt="animated logo" className="w-[20rem]" />
         </div>
+      ) : (
+        <>
+          {/* --- first section */}
+          <section className="flex justify-between items-start w-full">
+            <div className="w-[60%]">
+              <div className="w-[53%] flex items-center justify-between mb-12 pl-5">
+                <div className="flex flex-col gap-3">
+                  <p className="text-xs text-gray-400">Available Balance</p>
+                  <h1 className="text-2xl font-bold">
+                    USD{' '}
+                    {data.balance.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    })}
+                  </h1>
+                </div>
 
-        <section className="flex flex-col gap-5 w-[30%]">
-          {sections.map((section, index) => (
-            <div key={index} className="flex flex-col gap-6">
-              <div className="flex items-center justify-between font">
-                <p className="text-xs text-gray-400">{section.label}</p>
-                <img src="/info-icon.svg" alt="info icon" />
+                <button
+                  type="button"
+                  className="text-sm bg-black text-white rounded-full px-12 py-3 cursor-pointer hover:scale-90 transition-all duration-200"
+                >
+                  Withdraw
+                </button>
               </div>
 
-              <span className="font degular-regular font-black text-2xl">
-                USD{' '}
-                {section.value.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })}
-              </span>
+              {/*  */}
+              <Chart data={transactions} />
             </div>
-          ))}
-        </section>
-      </section>
 
-      {/* --- table */}
-      <TransactionTable data={transactions} />
+            <section className="flex flex-col gap-5 w-[30%]">
+              {sections.map((section, index) => (
+                <div key={index} className="flex flex-col gap-6">
+                  <div className="flex items-center justify-between font">
+                    <p className="text-xs text-gray-400">{section.label}</p>
+                    <img src="/info-icon.svg" alt="info icon" />
+                  </div>
+
+                  <span className="font degular-regular font-black text-2xl">
+                    USD{' '}
+                    {section.value.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    })}
+                  </span>
+                </div>
+              ))}
+            </section>
+          </section>
+
+          {/* --- table */}
+          <TransactionTable data={transactions} />
+        </>
+      )}
     </section>
   );
 };

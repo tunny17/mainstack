@@ -38,7 +38,6 @@ const Filter = ({
   ];
 
   const handleTransactionStatusChange = (newValues: Record<string, boolean>) => {
-    console.log('Selected transaction status:', newValues);
     setTransactionStatus(newValues as TransactionStatus);
 
     // Find the key with the value `true`
@@ -49,7 +48,6 @@ const Filter = ({
   };
 
   const handleTransactionTypesChange = (newValues: Record<string, boolean>) => {
-    console.log('Selected transaction types:', newValues);
     setTransactionTypes(newValues as TransactionTypes);
 
     const selectedStatus = Object.entries(newValues).find(([, value]) => value)?.[0] || '';
